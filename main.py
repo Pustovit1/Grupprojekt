@@ -6,3 +6,5 @@ def play():
     else:
         print("We play")
 play()
+
+#vet ngn hur man testar programmet

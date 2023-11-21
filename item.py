@@ -6,3 +6,4 @@ class Item():
         self.name = name
         self.rarity = rarity
         self.strength = strength
+
