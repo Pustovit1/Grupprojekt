@@ -6,6 +6,7 @@ monster_str = random.randint(player_strength-5,player_strength+5)
 def monster_event():
     print("(#'Д')")
     print("Oj, ett monster!")
+    print("Oj, ett monster!")
     
     if monster_str>player_strength+3:
         print("den verkar vara stark...")
