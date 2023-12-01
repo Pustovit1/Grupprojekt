@@ -105,9 +105,3 @@ elif door.number == 1:
 elif door.number == 2:
     print("Trap")
     trap_event()
-
-
-
-
-trap_event()
-stats()
