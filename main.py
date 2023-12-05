@@ -2,7 +2,6 @@ import re
 import random
 from random import randint
 
-
 def play():
     while True:
             svar = input("Vill du spela? ").capitalize() # Frågar om man vill spela eller inte
@@ -40,6 +39,7 @@ def Namn():
             print("Du kan endast ha bokstäver i ditt namn!")
     return namn
 player1 = Player(Namn(),5,10,1)
+
 class Item():
     def __init__(self):
         self.name = random.choice(["Sword of Extermination","Muramasa","Mjolnir","Excalibur","Baxcalibur", "Zangetsu"] )
@@ -63,11 +63,13 @@ print(Weapon_item.get_rarity_item())
 print(Weapon_item.name, str(Weapon_item.strength) +  " STRENGTH")
 
 
-
-
 def chest_event():
     global player1
-    print("Chest")
+    while True:
+        chest_svar = input("Vill du öppna kistan?\n Ja eller Nej").capitalize
+        if chest_svar == "Ja":
+
+    
 
 monster_str = random.randint(player1.strength-5,player1.strength+5)
 
