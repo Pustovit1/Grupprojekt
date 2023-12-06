@@ -4,37 +4,34 @@ from random import randint
 
 def play():
     while True:
-            svar = input("Vill du spela? ").capitalize() # Frågar om man vill spela eller inte
-            if svar == "Nej": #Om man skriver Nej så avslutas kod
-                print("Vad? Vågar du kanske inte?")
-                quit() 
-            elif svar == "Ja":  #om man skriver Ja så börjas spel
-             print("Då kör vi!")
-             return #Avslutar funktion
-            print("Svara med 'Ja' eller 'Nej'. Tack") #ser till att man svarar bara Ja eller Nej
+        try: 
+            svar = int(input("""Vill du spela?  
+1. Ja
+2. Nej                       
+Svar: """))   # Frågar om man vill spela eller inte
+        except ValueError:
+            print("Svara med '1' eller '2'. Tack")      
+            continue               
+        match svar:
+            case 1:
+                print("Då kör vi! Ditt mål är att nå level 10")  
+                return             
+            case 2:
+                svar2 = int(input("""Vad? Vågar du kanske inte?
+1. Nej, klart att jag vågar!. Hejdå!
+2. Ja... jag vågar kanske inte.
+Svar: """))
+                match svar2:
+                       case 1:
+                        quit()
+                       case 2:
+                        svar = 1
+            case _:
+                print("Svara med '1' eller '2'. Tack")               #ser till att man svarar bara Ja eller Nej
 play()
-
-def choise():
-    while True:
-            choose = int(input("""Välj vad vill du göra:
-                    1. Gå vidare och välja dörr                 
-                    2. Kolla ditt inventiry
-                    3. Kolla dina stats
-                    4. Avsluta spel
-                    Ditt val -> """)) #Man väljer vad ska göras
-            if choose == 1:            #Om man väljer 1 så körs funktion door
-                door()
-            elif choose == 2:          #om man väljer 2 så kollar man sin inventory
-                print("inventory")
-            elif choose == 3:           #Om man väljer 3 så koollar man sin stats
-                stats()
-            elif choose == 4:           #om man väljer 4 så avslutas spel
-                print("Game Over")
-                quit()
-            else:
-                print("Svara med 1,2,3 eller 4. Tack")#skickar felmeddelande om spellaren värljer ett ogiltigt svar. 
+                                                                    
 class Player:
-    def __init__(self, name, strength, hp, lvl): #innehåler spelarens stats
+    def __init__(self, name, strength, hp, lvl):                             #innehåler spelarens stats
        self.name = name 
        self.strength = strength
        self.hp = hp
@@ -45,13 +42,19 @@ class Door:
         self.number = number
 
 def stats():
+    """
+    Visar spelarens statistik
+    """
     print(f"""Ditt namn är:{player1.name}
               Din hälsa är {player1.hp} 
               Din lvl är {player1.lvl} 
               Din styrka är {player1.strength}""")#visar s
 
-def Namn(): #låter spelaren knappa in ett namn, och ger ett felmeddelande om det finns någon annat än bokstäver i namn
-    namn = ""
+def Namn():
+    """
+    låter spelaren knappa in ett namn, och ger ett felmeddelande om det finns någon annat än bokstäver i namn
+    """
+    namn = ""  
     while True:
         namn = input("Skriv ditt namn: ")
         if re.match('^[A-Za-z]+$',namn):
@@ -59,11 +62,12 @@ def Namn(): #låter spelaren knappa in ett namn, och ger ett felmeddelande om de
         else:  
             print("Du kan endast ha bokstäver i ditt namn!")
     return namn
-player1 = Player(Namn(),5,10,1) #Gör så att man får dessa stats från början
+
+player1 = Player(Namn(),5,10,1)                                                #Gör så att man får dessa stats från början
 
 class Item():
     def __init__(self): #bestämmer namnet på vapnet
-        self.name = random.choice(["Sword of Extermination","Muramasa","Mjolnir","Excalibur","Baxcalibur", "Zangetsu"] )
+        self.name = random.choice(["Sword of Extermination","Muramasa","Mjolnir","Excalibur","Baxcalibur", "Zangetsu", "Kiribachi","Umbra","En fryst lax"] )
         self.strength = random.randint(1,10)
     
     def get_rarity_item(self):
@@ -75,36 +79,56 @@ class Item():
             return "Epic"
         elif 9 < self.strength <= 10:
             return "LEGENDARY"
+        else:
+            return "Vad vet jag?!?!"
 
 
 # Basera item rarity på dess strength
 class Inventory():
     def __init__(self):
         self.items = []
-    def view_invetory(self):
+    def view_inventory(self):
         print("Inventory")
-        for item, (item,) in enumerate
-        
-            
+        for item_number, (item) in enumerate(self.items, 1):
+            print(f"{item_number}, {item.name}")
+    
+    def add_inventory(self, added_item):
+        if len(self.items) < 5:
+            self.items.append(added_item)
+        else:
+            deleteitem = int(input("""Ditt inventory är fullt, villl du byta ut något?
+1. Ja
+2. Nej, jag slänger bort det
+Svar: """)) 
+            if deleteitem == 1:
+                self.view_inventory()
+                chosenitem = input("""vilket item vill du ta bort?
+                                   Svara i nummer på listan!""")
+                self.items.remove(chosenitem-1)
+            elif deleteitem == 2: 
+                print("Du slängde bort ditt item och gick vidare")
+            else:
+                print("Ogiltigt svar, du slänger bort ditt item och går vidare")       
+
+                        
+    
+player_inventory = Inventory()
+Weapon_Item = Item()
+player_inventory.view_inventory()
 
    
         
 
 def chest_event():
     print("chest")
-#     global player1
-#     Weapon_item = Item()
-#     player_input = input("Du hittade en kista, vill du öpnna den?\n Ja/Nej").capitalize
-#     if player_input == "Ja":
-#         Weapon_item = Item()
-#         print(Weapon_item.get_rarity_item())
-#         print(Weapon_item.name, str(Weapon_item.strength) +  " STRENGTH")
-#         player_input = input("Vill du plocka upp item?\n Ja/Nej").capitalize
-#         if player_input == "Ja":
-#             inventory.append(Weapon_item)
-            
-            
-            
+    global player1     
+    global Weapon_Item      
+    global player_inventory       
+    print(Weapon_Item.get_rarity_item())
+    print(Weapon_Item.name, str(Weapon_Item.strength) +  " STRENGTH")
+    player_inventory.add_inventory(Weapon_Item)
+
+      
     
     
 
@@ -146,6 +170,23 @@ def trap_event(): #En fälla som kan göra så at
     
 def door():    
     while True:
+        doorchoise= int(input("""vilken dörr vill du gå in i?
+              1. Röd dörr 2. Blå dörr 3. Svart dörr
+                              ditt svar: """))
+        match doorchoise:
+            case 1:
+                print("Du gick in i den röda dörren")
+                break
+            case 2:
+                print("Du gick in i den blåa dörren")
+                break
+            case 3: 
+                print("Du gick in i den svarta dörren")
+                break
+            case _:
+                print("Välj mellan 1,2 eller 3.")
+                continue
+    while True:
         random_number = randint(0,2)
         door = Door(random_number)
         break
@@ -157,11 +198,34 @@ def door():
     elif door.number == 2:
         print("Trap")
         trap_event()
+
+def choise():
+    global player_inventory
+    while True:
+            choose = int(input("""Välj vad vill du göra:
+1. Gå vidare och välja dörr                 
+2. Kolla ditt inventiry
+3. Kolla dina stats
+4. Avsluta spel
+Svar: """)) #Man väljer vad ska göras
+            match choose:
+                case 1:
+                    door()  #Om man väljer 1 så körs funktion door
+                case 2:
+                    player_inventory.view_inventory()
+                case 3:
+                    stats()
+                case 4:
+                    print("Game Over")
+                    quit()
+                case _:
+                    print("Svara med 1,2,3 eller 4. Tack")                       #skickar felmeddelande om spellaren värljer ett ogiltigt svar. 
+
 choise()
 
 if player1.hp == 0:
-    print("Du dog")
-    quit()
+    print("Oj, du dog! Game Over!")
+    play()
 elif player1.lvl == 10:
-    print("gratulerar du vann spelet!")
-    quit()
+    print("Gratulerar, du vann spelet!")
+    play()
