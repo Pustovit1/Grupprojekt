@@ -62,10 +62,13 @@ def Namn():
         else:  
             print("Du kan endast ha bokstäver i ditt namn!")
     return namn
+
 def player_strength():
     global player1
-    strengt = 5
-    return strengt
+    global player_inventory
+    strength = 5
+    return strength
+
 player1 = Player(Namn(), player_strength(), 10 , 1)                                                #Gör så att man får dessa stats från början
 
 class Item():
