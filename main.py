@@ -29,13 +29,47 @@ Svar: """))
             case _:
                 print("Svara med '1' eller '2'. Tack")               #ser till att man svarar bara Ja eller Nej
 play()
-                                                                    
+
+class Inventory():
+    def __init__(self):
+        self.items = []
+
+    def view_inventory(self):
+        print("Inventory")
+        for item_number, (item) in enumerate(self.items, 1):
+            print(f"{item_number}, {item.name}, +{item.strength} Strength")
+    
+    def add_inventory(self, added_item):
+        if len(self.items) < 5:
+            self.items.append(added_item)
+        else:
+            deleteitem = int(input("""Ditt inventory är fullt, villl du byta ut något?
+1. Ja
+2. Nej, jag slänger bort det
+Svar: """)) 
+            if deleteitem == 1:
+                self.view_inventory()
+                chosenitem = int(input("""Vilket item vill du ta bort? Svara med nummer på listan!"""))
+                self.items.remove(self.items[chosenitem-1])
+            elif deleteitem == 2: 
+                print("Du slängde bort ditt item och går vidare")
+            else:
+                print("Ogiltigt svar, du slänger bort ditt item och går vidare")
+        
+        player1.update_strength()                                         
+
 class Player:
-    def __init__(self, name, strength, hp, lvl):                             #innehåler spelarens stats
-       self.name = name 
-       self.strength = strength
-       self.hp = hp
-       self.lvl = lvl
+    def __init__(self, name, hp, lvl):
+        self.name = name
+        self.hp = hp
+        self.lvl = lvl
+        self.inventory = Inventory()
+        self.strength = 5
+
+    def update_strength(self):
+        self.strength = sum(item.strength for item in self.inventory.items) + 5
+        return self.strength
+
 
 class Door:
     def __init__(self,number):
@@ -45,10 +79,12 @@ def stats():
     """
     Visar spelarens statistik
     """
-    print(f"""Ditt namn är:{player1.name}
-              Din hälsa är {player1.hp} 
-              Din lvl är {player1.lvl} 
-              Din styrka är {player1.strength}""")#visar s
+    player1.update_strength()
+    print(f"""Ditt namn är: {player1.name}
+              Din hälsa är: {player1.hp} 
+              Din lvl är: {player1.lvl} 
+              Din styrka är: {player1.get_strength()}""") # visar s
+
 
 def Namn():
     """
@@ -63,7 +99,7 @@ def Namn():
             print("Du kan endast ha bokstäver i ditt namn!")
     return namn
 
-player1 = Player(Namn(),5,10,1)                                                #Gör så att man får dessa stats från början
+player1 = Player(Namn(), 10, 1)                                                #Gör så att man får dessa stats från början
 
 class Item():
     def __init__(self): #bestämmer namnet på vapnet
@@ -80,35 +116,8 @@ class Item():
         elif 9 < self.strength <= 10:
             return "LEGENDARY"
         else:
-            return "Vad vet jag?!?!"
+            return "Unknown?!?!"
 
-
-# Basera item rarity på dess strength
-class Inventory():
-    def __init__(self):
-        self.items = []
-    def view_inventory(self):
-        print("Inventory")
-        for item_number, (item) in enumerate(self.items, 1):
-            print(f"{item_number}, {item.name}")
-    
-    def add_inventory(self, added_item):
-        if len(self.items) < 5:
-            self.items.append(added_item)
-        else:
-            deleteitem = int(input("""Ditt inventory är fullt, villl du byta ut något?
-1. Ja
-2. Nej, jag slänger bort det
-Svar: """)) 
-            if deleteitem == 1:
-                self.view_inventory()
-                chosenitem = input("""vilket item vill du ta bort?
-                                   Svara i nummer på listan!""")
-                self.items.remove(chosenitem-1)
-            elif deleteitem == 2: 
-                print("Du slängde bort ditt item och gick vidare")
-            else:
-                print("Ogiltigt svar, du slänger bort ditt item och går vidare")       
 
                         
     
@@ -116,21 +125,18 @@ player_inventory = Inventory()
 Weapon_Item = Item()
 player_inventory.view_inventory()
 
-   
-        
 
 def chest_event():
     print("chest")
-    global player1     
-    global Weapon_Item      
-    global player_inventory       
+    global player1       
+    global player_inventory
+
+    Weapon_Item = Item() 
+         
     print(Weapon_Item.get_rarity_item())
     print(Weapon_Item.name, str(Weapon_Item.strength) +  " STRENGTH")
     player_inventory.add_inventory(Weapon_Item)
 
-      
-    
-    
 
 class Monster:
     def __init__(self, str):
@@ -144,6 +150,8 @@ def monster_strengt():
 
 def monster_event():
     global player1
+    player1.update_strength()
+
     monster = monster_strengt()
     print("₍Ꙭ̂₎")
     print("Oj, ett monster!")
@@ -199,27 +207,44 @@ def door():
         print("Trap")
         trap_event()
 
+def stats(player1):
+    """
+    Visar spelarens statistik
+    """
+    player1.update_strength()
+    print(f"""Ditt namn är: {player1.name}
+              Din hälsa är: {player1.hp} 
+              Din lvl är: {player1.lvl} 
+              Din styrka är: {player1.update_strength()}""")  # visar s
+
+# ... (rest of the code)
+
 def choise():
     global player_inventory
+    global player1
     while True:
-            choose = int(input("""Välj vad vill du göra:
+        choose = int(input("""Välj vad vill du göra:
 1. Gå vidare och välja dörr                 
 2. Kolla ditt inventiry
 3. Kolla dina stats
 4. Avsluta spel
-Svar: """)) #Man väljer vad ska göras
-            match choose:
-                case 1:
-                    door()  #Om man väljer 1 så körs funktion door
-                case 2:
-                    player_inventory.view_inventory()
-                case 3:
-                    stats()
-                case 4:
-                    print("Game Over")
-                    quit()
-                case _:
-                    print("Svara med 1,2,3 eller 4. Tack")                       #skickar felmeddelande om spellaren värljer ett ogiltigt svar. 
+Svar: """))  # Man väljer vad ska göras
+        match choose:
+            case 1:
+                door()  # Om man väljer 1 så körs funktion door
+            case 2:
+                player_inventory.view_inventory()
+                player1.update_strength()
+            case 3:
+                stats(player1)
+            case 4:
+                print("Game Over")
+                quit()
+            case _:
+                print("Svara med 1,2,3 eller 4. Tack")  # skickar felmeddelande om spellaren värljer ett ogiltigt svar.
+
+# ... (rest of the code)
+
 
 choise()
 
