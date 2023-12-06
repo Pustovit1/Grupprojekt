@@ -62,8 +62,11 @@ def Namn():
         else:  
             print("Du kan endast ha bokstäver i ditt namn!")
     return namn
-
-player1 = Player(Namn(),5,10,1)                                                #Gör så att man får dessa stats från början
+def player_strength():
+    global player1
+    strengt = 5
+    return strengt
+player1 = Player(Namn(), player_strength(), 10 , 1)                                                #Gör så att man får dessa stats från början
 
 class Item():
     def __init__(self): #bestämmer namnet på vapnet
