@@ -8,7 +8,8 @@ def play():
         try:
             svar = int(input("""Vill du spela?  
 1. Ja
-2. Nej                      
+2. Nej 
+3. Kolla credits                                                  
 Svar: """))   # Frågar om man vill spela eller inte
         except ValueError:
             print("Svara med '1' eller '2'. Tack")      
@@ -27,8 +28,13 @@ Svar: """))
                         quit()
                        case 2:
                         svar = 1
+            case 3:
+                print("""
+Programmers: Taras, Kasumi, Ray
+Team name: Ghosts'n goblins                               
+                                """)
             case _:
-                print("Svara med '1' eller '2'. Tack")               #ser till att man svarar bara Ja eller Nej
+                print("Svara med '1', '2' eller '3'. Tack")               #ser till att man svarar bara Ja eller Nej
 play()
 
 
@@ -55,6 +61,7 @@ Svar: """))
                 chosenitem = int(input("""Vilket item vill du ta bort? Svara med nummer på listan!"""))
                 self.items.remove(self.items[chosenitem-1])
                 #player1.strength = self.items.strength[chosenitem-1]
+                print("Du byter ut ditt item och går vidare")
             elif deleteitem == 2:
                 print("Du slängde bort ditt item och går vidare")
             else:
@@ -175,18 +182,32 @@ def monster_event():
         print("...men, den ser ganska svag ut!")
    
     if monster.str > player1.strength:
-        print("monstret var starkare än vad du trodde och du blir skadad! du springer snabbt till nästa dörr...")
+        print("""monstret var starkare än vad du trodde och du blir skadad! du springer snabbt till nästa dörr...""")
         player1.hp -= 1
         if player1.hp<=0:
-            print("oj, du dog! Game over!")
+            print("""oj, du dog!
+                  
+╔╦══╦════════════════╗
+║║╔═╬═╦══╦═╗╔═╦╦╦═╦═╗║
+║║╚╝╠╝║║║║╩╣║║║║║╩╣╠╝║
+║╚══╩═╩╩╩╩═╝╚═╩═╩═╩╝ ║
+╚════════════════════╝
+                  
+                  """)
             play()
         else:
-            print(f"du har {player1.hp} hp kvar")
+            print(f"""du har {player1.hp} hp kvar
+                  
+                  """)
     elif monster.str <= player1.strength:
-        print("Du dödar monstret och går vidare till nästa rum")
+        print("""Du dödar monstret och går vidare till nästa rum
+              
+              """)
         player1.lvl = player1.lvl+1
         if player1.lvl >=10:
-            print("Grattis, du nådde level 10 och har därför vunnit spelet!")
+            print("""Grattis, du nådde level 10 och har därför vunnit spelet!
+                  
+                  """)
             play()
 
 
@@ -198,10 +219,20 @@ def trap_event(): #En fälla som kan göra så at
     global player1
     player1.hp = player1.hp-1
     if player1.hp<=0:
-        print("Oj, du dog! Game Over!")
+        print("""Oj, du dog! 
+
+╔╦══╦════════════════╗
+║║╔═╬═╦══╦═╗╔═╦╦╦═╦═╗║
+║║╚╝╠╝║║║║╩╣║║║║║╩╣╠╝║
+║╚══╩═╩╩╩╩═╝╚═╩═╩═╩╝ ║
+╚════════════════════╝      
+             
+              """)
         play()
     else:
-        print(f"du har {player1.hp} hp kvar")
+        print(f"""du har {player1.hp} hp kvar
+              
+              """)
    
 def door():    
     while True:
