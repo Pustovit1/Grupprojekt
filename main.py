@@ -34,13 +34,13 @@ play()
 
 class Inventory():
     def __init__(self):
-        self.items = []
+        self.items: list[Item] = []
 
 
     def view_inventory(self):
-        print("Inventory")
-        for item_number, (item) in enumerate(self.items, 1):
-            print(f"{item_number}, {item.name}, +{item.strength} Strength")
+        print("Inventory\n")
+        for item in range(0, len(self.items)):
+            print(f"{item + 1}, {self.items[item].rarity}, {self.items[item].name}, +{self.items[item].strength} Strength\n")
    
     def add_inventory(self, added_item):
         if len(self.items) < 5:
@@ -54,12 +54,12 @@ Svar: """))
                 self.view_inventory()
                 chosenitem = int(input("""Vilket item vill du ta bort? Svara med nummer på listan!"""))
                 self.items.remove(self.items[chosenitem-1])
+                player1.strength -= self.items[chosenitem-1]
             elif deleteitem == 2:
                 print("Du slängde bort ditt item och går vidare")
             else:
                 print("Ogiltigt svar, du slänger bort ditt item och går vidare")
-       
-        player1.update_strength()                                        
+                                         
 
 
 class Player:
@@ -70,10 +70,6 @@ class Player:
         self.inventory = Inventory()
         self.strength = 5
 
-
-    def update_strength(self):
-        self.strength = sum(item.strength for item in self.inventory.items) + 5
-        return self.strength
 
 
 
@@ -87,11 +83,11 @@ def stats():
     """
     Visar spelarens statistik
     """
-    player1.update_strength()
+    global player1
     print(f"""Ditt namn är: {player1.name}
               Din hälsa är: {player1.hp}
               Din lvl är: {player1.lvl}
-              Din styrka är: {player1.get_strength()}""") # visar s
+              Din styrka är: {player1.strength}""") # visar s
 
 
 
@@ -117,18 +113,17 @@ class Item():
     def __init__(self): #bestämmer namnet på vapnet
         self.name = random.choice(["Sword of Extermination","Muramasa","Mjolnir","Excalibur","Baxcalibur", "Zangetsu", "Kiribachi","Umbra","En fryst lax"] )
         self.strength = random.randint(1,10)
-   
-    def get_rarity_item(self):
-        if 0 < self.strength <= 5:
-            return "Common"
-        elif 5 < self.strength <= 7:
-            return "Uncommon"
-        elif 7 < self.strength <= 9:
-            return "Epic"
-        elif 9 < self.strength <= 10:
-            return "LEGENDARY"
+        self.rarity = ""
+        if self.strength <= 5:
+            self.rarity = "Common"
+        elif self.strength <= 7:
+            self.rarity = "Uncommon"
+        elif self.strength <= 9:
+            self.rarity = "Epic"
+        elif self.strength == 10:
+            self.rarity = "LEGENDARY"
         else:
-            return "Unknown?!?!"
+            self.rarity = "Unknown"
 
 
 
@@ -146,13 +141,12 @@ def chest_event():
     print("chest")
     global player1      
     global player_inventory
-
-
     Weapon_Item = Item()
-         
-    print(Weapon_Item.get_rarity_item())
+
+    print(Weapon_Item.rarity)
     print(Weapon_Item.name, str(Weapon_Item.strength) +  " STRENGTH")
     player_inventory.add_inventory(Weapon_Item)
+    player1.strength = player1.strength + (Weapon_Item.strength) 
 
 
 
@@ -170,7 +164,6 @@ def monster_strengt():
 
 def monster_event():
     global player1
-    player1.update_strength()
 
 
     monster = monster_strengt()
@@ -232,18 +225,6 @@ def door():
         trap_event()
 
 
-def stats(player1):
-    """
-    Visar spelarens statistik
-    """
-    player1.update_strength()
-    print(f"""Ditt namn är: {player1.name}
-              Din hälsa är: {player1.hp}
-              Din lvl är: {player1.lvl}
-              Din styrka är: {player1.update_strength()}""")  # visar s
-
-
-
 def choise():
     global player_inventory
     global player1
@@ -259,9 +240,8 @@ Svar: """))  # Man väljer vad ska göras
                 door()  # Om man väljer 1 så körs funktion door
             case 2:
                 player_inventory.view_inventory()
-                player1.update_strength()
             case 3:
-                stats(player1)
+                stats()
             case 4:
                 print("Game Over")
                 quit()
