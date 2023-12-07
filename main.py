@@ -54,7 +54,7 @@ Svar: """))
                 self.view_inventory()
                 chosenitem = int(input("""Vilket item vill du ta bort? Svara med nummer på listan!"""))
                 self.items.remove(self.items[chosenitem-1])
-                player1.strength -= self.items[chosenitem-1]
+                #player1.strength = self.items.strength[chosenitem-1]
             elif deleteitem == 2:
                 print("Du slängde bort ditt item och går vidare")
             else:
@@ -177,10 +177,17 @@ def monster_event():
     if monster.str > player1.strength:
         print("monstret var starkare än vad du trodde och du blir skadad! du springer snabbt till nästa dörr...")
         player1.hp -= 1
-        print(f"du har {player1.hp} hp kvar")
+        if player1.hp<=0:
+            print("oj, du dog! Game over!")
+            play()
+        else:
+            print(f"du har {player1.hp} hp kvar")
     elif monster.str <= player1.strength:
         print("Du dödar monstret och går vidare till nästa rum")
-        player1.lvl += 1
+        player1.lvl = player1.lvl+1
+        if player1.lvl >=10:
+            print("Grattis, du nådde level 10 och har därför vunnit spelet!")
+            play()
 
 
 
@@ -190,7 +197,11 @@ def trap_event(): #En fälla som kan göra så at
     print("Oj, en fälla! du ramlar ner i ett hål fyllt med små taggar! Du förlorar 1 HP")
     global player1
     player1.hp = player1.hp-1
-    print(f"du har {player1.hp} hp kvar")
+    if player1.hp<=0:
+        print("Oj, du dog! Game Over!")
+        play()
+    else:
+        print(f"du har {player1.hp} hp kvar")
    
 def door():    
     while True:
@@ -229,7 +240,9 @@ def choise():
     global player_inventory
     global player1
     while True:
-        choose = int(input("""Välj vad vill du göra:
+        choose = int(input(f"""spelare:{player1.name}
+HP kvar: {player1.hp}                           
+Välj vad vill du göra:
 1. Gå vidare och välja dörr                
 2. Kolla ditt inventiry
 3. Kolla dina stats
@@ -252,12 +265,7 @@ Svar: """))  # Man väljer vad ska göras
 choise()
 
 
-if player1.hp == 0:
-    print("Oj, du dog! Game Over!")
-    play()
-elif player1.lvl == 10:
-    print("Gratulerar, du vann spelet!")
-    play()
+
 
 
 
