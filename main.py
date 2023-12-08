@@ -75,6 +75,7 @@ class Inventory():
         while True:
             if len(self.items) < 5:
                 self.items.append(added_item)
+                return
             else:
                 try: deleteitem = int(input("""Ditt inventory är fullt, villl du byta ut något?
 1. Ja
@@ -82,6 +83,7 @@ class Inventory():
 Ditt svar: """))
                 except ValueError:
                     print("Svara med '1' eller '2'. Tack")
+                    continue
             if deleteitem == 1:
                 self.view_inventory()
                 chosenitem = int(input("""Vilket item vill du ta bort? Svara med nummer på listan!"""))
