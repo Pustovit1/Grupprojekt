@@ -96,7 +96,7 @@ Ditt svar: """))
                 clear()
             else:
                 print("Ogiltigt svar, du slänger bort ditt item och går vidare")
-                clear()
+                clear
                                          
 
 
@@ -239,11 +239,11 @@ def monster_event():
                   """)
             clear()
     elif monster.str <= player1.strength:
-        print("""Du dödar monstret och går vidare till nästa rum.
-              
-              """)
-        clear()
         player1.lvl = player1.lvl+1
+        print(f"""
+            Du dödar monstret och går vidare till nästa rum.
+            Ditt lvl är {player1.lvl} """)
+        clear()
         if player1.lvl >=10:
             print("""Grattis, du nådde level 10 och har därför vunnit spelet!
                   
