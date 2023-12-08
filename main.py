@@ -1,8 +1,18 @@
 import re
 import random
-from random import randint
 from os import system
-system('cls')
+
+def clear():
+    input("""
+          
+
+
+--------------------------Tryck enter för att gå vidare--------------------------
+          
+
+          
+""")
+    system('cls')
 
 def play():
     while True:
@@ -17,15 +27,26 @@ Svar: """))   # Frågar om man vill spela eller inte
             continue              
         match svar:
             case 1:
-                print("Då kör vi! Ditt mål är att nå level 10")  
+                print("Då kör vi! Ditt mål är att nå level 10")
+               
                 return            
             case 2:
                 svar2 = int(input("""Vad? Vågar du kanske inte?
 1. Nej, klart att jag vågar!. Hejdå!
-2. Ja... jag vågar kanske inte.
-Svar: """))
+2. Jag vågar kanske inte.
+Ditt svar: """))
+                
                 match svar2:
                        case 1:
+                        """
+
+╔╦══╦════════════════╗
+║║╔═╬═╦══╦═╗╔═╦╦╦═╦═╗║
+║║╚╝╠╝║║║║╩╣║║║║║╩╣╠╝║
+║╚══╩═╩╩╩╩═╝╚═╩═╩═╩╝ ║
+╚════════════════════╝      
+             
+              """
                         quit()
                        case 2:
                         svar = 1
@@ -34,6 +55,7 @@ Svar: """))
 Programmers: Taras, Kasumi, Ray
 Team name: Ghosts'n goblins                               
                                 """)
+                clear()
             case _:
                 print("Svara med '1', '2' eller '3'. Tack")               #ser till att man svarar bara Ja eller Nej
 play()
@@ -56,7 +78,7 @@ class Inventory():
             try: deleteitem = int(input("""Ditt inventory är fullt, villl du byta ut något?
 1. Ja
 2. Nej, jag slänger bort det
-Svar: """))
+Ditt svar: """))
             except ValueError:
                 print("Svara med '1' eller '2'. Tack")
             if deleteitem == 1:
@@ -65,10 +87,13 @@ Svar: """))
                 self.items.remove(self.items[chosenitem-1])
                 #player1.strength = self.items.strength[chosenitem-1]
                 print("Du byter ut ditt item och går vidare")
+                clear()
             elif deleteitem == 2:
                 print("Du slängde bort ditt item och går vidare")
+                clear()
             else:
                 print("Ogiltigt svar, du slänger bort ditt item och går vidare")
+                clear()
                                          
 
 
@@ -94,10 +119,12 @@ def stats():
     Visar spelarens statistik
     """
     global player1
-    print(f"""Ditt namn är: {player1.name}
-              Din hälsa är: {player1.hp}
-              Din lvl är: {player1.lvl}
-              Din styrka är: {player1.strength}""") # visar s
+    print(f"""
+Ditt namn är: {player1.name}
+Din hälsa är: {player1.hp}
+Din lvl är: {player1.lvl}
+Din styrka är: {player1.strength}""")
+    clear() # visar s
 
 
 
@@ -157,6 +184,7 @@ def chest_event():
     print(Weapon_Item.name, str(Weapon_Item.strength) +  " STRENGTH")
     player_inventory.add_inventory(Weapon_Item)
     player1.strength = player1.strength + (Weapon_Item.strength) 
+    clear()
 
 
 
@@ -179,16 +207,19 @@ def monster_event():
     monster = monster_strengt()
     print("₍Ꙭ̂₎")
     print("Oj, ett monster!")
+    clear()
     if monster.str > player1.strength + 3:
-        print("den verkar vara stark...")
+        print("Den verkar vara stark...")
+        clear()
     elif player1.strength > monster.str + 3:
         print("...men, den ser ganska svag ut!")
-   
+        clear()
     if monster.str > player1.strength:
-        print("""monstret var starkare än vad du trodde och du blir skadad! du springer snabbt till nästa dörr...""")
+        print("""Monstret var starkare än vad du trodde och du blir skadad! du springer snabbt till nästa dörr...""")
+        clear()
         player1.hp -= 1
         if player1.hp<=0:
-            print("""oj, du dog!
+            print("""Oj, du dog!
                   
 ╔╦══╦════════════════╗
 ║║╔═╬═╦══╦═╗╔═╦╦╦═╦═╗║
@@ -197,20 +228,24 @@ def monster_event():
 ╚════════════════════╝
                   
                   """)
+            clear()
             play()
         else:
-            print(f"""du har {player1.hp} hp kvar
+            print(f"""Du har {player1.hp} hp kvar.
                   
                   """)
+            clear()
     elif monster.str <= player1.strength:
-        print("""Du dödar monstret och går vidare till nästa rum
+        print("""Du dödar monstret och går vidare till nästa rum.
               
               """)
+        clear()
         player1.lvl = player1.lvl+1
         if player1.lvl >=10:
             print("""Grattis, du nådde level 10 och har därför vunnit spelet!
                   
                   """)
+            clear()
             play()
 
 
@@ -218,7 +253,8 @@ def monster_event():
 
 def trap_event(): #En fälla som kan göra så at
     print("(______)")
-    print("Oj, en fälla! du ramlar ner i ett hål fyllt med små taggar! Du förlorar 1 HP")
+    print("Oj, en fälla! Du ramlar ner i ett hål fyllt med små taggar! Du förlorar 1 HP")
+    clear()
     global player1
     player1.hp = player1.hp-1
     if player1.hp<=0:
@@ -233,34 +269,40 @@ def trap_event(): #En fälla som kan göra så at
               """)
         play()
     else:
-        print(f"""du har {player1.hp} hp kvar
+        print(f"""Du har {player1.hp} hp kvar
               
               """)
    
 def door():    
     while True:
         try :
-            doorchoise= int(input("""vilken dörr vill du gå in i?
-              1. Röd dörr 2. Blå dörr 3. Svart dörr
-                              ditt svar: """))
+            doorchoise= int(input("""Vilken dörr vill du gå in i?
+1. Röd dörr 
+2. Blå dörr
+3. Svart dörr
+Ditt svar: """))
+            
         except ValueError:
             print("Svara med '1', '2' eller '3'. Tack")
             continue
         match doorchoise:
             case 1:
                 print("Du gick in i den röda dörren")
+                clear()
                 break
             case 2:
                 print("Du gick in i den blåa dörren")
+                clear()
                 break
             case 3:
                 print("Du gick in i den svarta dörren")
+                clear()
                 break
             case _:
                 print("Välj mellan 1,2 eller 3.")
                 continue
     while True:
-        random_number = randint(0,2)
+        random_number = random.randint(0,2)
         door = Door(random_number)
         break
 
@@ -270,7 +312,6 @@ def door():
     elif door.number == 1:
         monster_event()
     elif door.number == 2:
-        print("Trap")
         trap_event()
 
 
@@ -289,15 +330,27 @@ Svar: """))  # Man väljer vad ska göras
         except ValueError:
             print("Svara med '1', '2', '3' eller '4'. Tack")
             continue
+        clear()
         match choose:
             case 1:
                 door()  # Om man väljer 1 så körs funktion door
+                clear()
             case 2:
                 player_inventory.view_inventory()
+                clear()
             case 3:
                 stats()
+                clear()
             case 4:
-                print("Game Over")
+                print(""" 
+
+╔╦══╦════════════════╗
+║║╔═╬═╦══╦═╗╔═╦╦╦═╦═╗║
+║║╚╝╠╝║║║║╩╣║║║║║╩╣╠╝║
+║╚══╩═╩╩╩╩═╝╚═╩═╩═╩╝ ║
+╚════════════════════╝      
+             
+              """)
                 quit()
             case _:
                 print("Svara med '1', '2', '3' eller '4'. Tack")  # skickar felmeddelande om spellaren värljer ett ogiltigt svar.
