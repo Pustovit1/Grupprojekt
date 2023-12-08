@@ -32,7 +32,7 @@ Svar: """))   # Frågar om man vill spela eller inte
                 return            
             case 2:
                 svar2 = int(input("""Vad? Vågar du kanske inte?
-1. Ja jag vågar!. Hejdå!
+1. Ja, jag vågar!. Hejdå!
 2. Nej, jag vågar inte.
 Ditt svar: """))
                 
