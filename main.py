@@ -72,15 +72,16 @@ class Inventory():
             print(f"{item + 1}, {self.items[item].rarity}, {self.items[item].name}, +{self.items[item].strength} Strength\n")
    
     def add_inventory(self, added_item):
-        if len(self.items) < 5:
-            self.items.append(added_item)
-        else:
-            try: deleteitem = int(input("""Ditt inventory är fullt, villl du byta ut något?
+        while True:
+            if len(self.items) < 5:
+                self.items.append(added_item)
+            else:
+                try: deleteitem = int(input("""Ditt inventory är fullt, villl du byta ut något?
 1. Ja
 2. Nej, jag slänger bort det
 Ditt svar: """))
-            except ValueError:
-                print("Svara med '1' eller '2'. Tack")
+                except ValueError:
+                    print("Svara med '1' eller '2'. Tack")
             if deleteitem == 1:
                 self.view_inventory()
                 chosenitem = int(input("""Vilket item vill du ta bort? Svara med nummer på listan!"""))
