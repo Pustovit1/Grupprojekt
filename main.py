@@ -1,7 +1,8 @@
 import re
 import random
 from random import randint
-
+from os import system
+system('cls')
 
 def play():
     while True:
@@ -52,10 +53,12 @@ class Inventory():
         if len(self.items) < 5:
             self.items.append(added_item)
         else:
-            deleteitem = int(input("""Ditt inventory är fullt, villl du byta ut något?
+            try: deleteitem = int(input("""Ditt inventory är fullt, villl du byta ut något?
 1. Ja
 2. Nej, jag slänger bort det
 Svar: """))
+            except ValueError:
+                print("Svara med '1' eller '2'. Tack")
             if deleteitem == 1:
                 self.view_inventory()
                 chosenitem = int(input("""Vilket item vill du ta bort? Svara med nummer på listan!"""))
@@ -236,9 +239,13 @@ def trap_event(): #En fälla som kan göra så at
    
 def door():    
     while True:
-        doorchoise= int(input("""vilken dörr vill du gå in i?
+        try :
+            doorchoise= int(input("""vilken dörr vill du gå in i?
               1. Röd dörr 2. Blå dörr 3. Svart dörr
                               ditt svar: """))
+        except ValueError:
+            print("Svara med '1', '2' eller '3'. Tack")
+            continue
         match doorchoise:
             case 1:
                 print("Du gick in i den röda dörren")
@@ -271,7 +278,7 @@ def choise():
     global player_inventory
     global player1
     while True:
-        choose = int(input(f"""spelare:{player1.name}
+        try: choose = int(input(f"""spelare:{player1.name}
 HP kvar: {player1.hp}                           
 Välj vad vill du göra:
 1. Gå vidare och välja dörr                
@@ -279,6 +286,9 @@ Välj vad vill du göra:
 3. Kolla dina stats
 4. Avsluta spel
 Svar: """))  # Man väljer vad ska göras
+        except ValueError:
+            print("Svara med '1', '2', '3' eller '4'. Tack")
+            continue
         match choose:
             case 1:
                 door()  # Om man väljer 1 så körs funktion door
@@ -290,13 +300,7 @@ Svar: """))  # Man väljer vad ska göras
                 print("Game Over")
                 quit()
             case _:
-                print("Svara med 1,2,3 eller 4. Tack")  # skickar felmeddelande om spellaren värljer ett ogiltigt svar.
-
-
+                print("Svara med '1', '2', '3' eller '4'. Tack")  # skickar felmeddelande om spellaren värljer ett ogiltigt svar.
 choise()
-
-
-
-
 
 
